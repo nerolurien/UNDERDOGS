@@ -1,61 +1,48 @@
+
+
 namespace EJETAGame
 {
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
 
+    /**
+     * Interactable test case where we change the color of a sphere gameobject
+     * into a random color;
+     */
     public class InteractionTEST : MonoBehaviour, IInteractable
     {
-        public KeyCode interactionKey = KeyCode.E;
+        private Color randomColor;
 
-        // Jumlah skor yang ditambahkan saat item diambil
-        public static int currentScoreAmount = 0;
-
-        public static bool pickedUp = false;
-
+        //Which button the user must press to initiate the Interaction;
+        public KeyCode interactionKey;
         public void Interact()
         {
-            if (InteractionTrashCan.isTrashCanTaken)
+            if (Input.GetKeyDown(interactionKey))
             {
-                Debug.Log("Tangan penuh! Tong sampah sudah diambil.");
-                InteractionText.instance.SetText("Tangan penuh! Tong sampah sudah diambil.");
-                return;
+                this.GetComponent<Renderer>().material.color = RandomColor();
             }
-
-            if (!pickedUp && Input.GetKeyDown(interactionKey))
-            {
-                pickedUp = true;
-                Debug.Log("Item Picked Up");
-
-                gameObject.SetActive(false);
-                Destroy(this); // opsional
-            }
-            else if (pickedUp)
-            {
-                Debug.Log("Item already picked up");
-            }
+            
         }
 
+        //When our interaction begin, we set the UI text to prompt the user to
+        //press a button to interact with the gameobject;
         public void OnInteractEnter()
         {
-            if (InteractionTrashCan.isTrashCanTaken)
-            {
-                InteractionText.instance.SetText("Tangan penuh! Tong sampah sudah diambil.");
-            }
-            else if (!pickedUp)
-            {
-                InteractionText.instance.SetText("Press " + interactionKey + " to pick up");
-            }
-            else
-            {
-                InteractionText.instance.SetText("Item already picked up");
-            }
+            InteractionText.instance.SetText("Press "+interactionKey+" to interact");
         }
 
+
+        //We can debug a statement to let us know when the interaction ends;
         public void OnInteractExit()
         {
-            InteractionText.instance.HideText();
             Debug.Log("Interaction Ended");
         }
+
+        private Color RandomColor()
+        {
+            return randomColor = Random.ColorHSV();
+        }
     }
+
 }

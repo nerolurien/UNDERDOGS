@@ -1,6 +1,8 @@
+
 namespace EJETAGame
 {
     using TMPro;
+    using Unity.VisualScripting;
     using UnityEngine;
 
     public class InteractionText : MonoBehaviour
@@ -8,36 +10,23 @@ namespace EJETAGame
         public static InteractionText instance { get; private set; }
 
         public TextMeshProUGUI textAppear;
-
         private void Awake()
         {
-            if (instance != null && instance != this)
+            if(instance!= null && instance != this)
             {
-                Destroy(this.gameObject); // destroy gameobject, bukan komponen saja
+                Destroy(this);
             }
             else
             {
                 instance = this;
             }
-
-            HideText(); // Sembunyikan saat awal
         }
 
         public void SetText(string text)
         {
-            if (textAppear != null)
-            {
-                textAppear.SetText(text);
-                textAppear.gameObject.SetActive(true);
-            }
+            textAppear.SetText(text);
         }
 
-        public void HideText()
-        {
-            if (textAppear != null)
-            {
-                textAppear.gameObject.SetActive(false);
-            }
-        }
     }
+
 }
